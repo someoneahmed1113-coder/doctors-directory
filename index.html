@@ -463,7 +463,7 @@ function results(list){
       <button class="card" type="button" data-id="${d.id}">
         <div class="row1"><div class="av">${esc(initials(d.n))}</div><div style="min-width:0"><div class="nm">${esc(d.n)}</div><div class="sp">${esc(d.s)}${d.u?' · '+esc(d.u):''}</div></div></div>
         <div class="meta"><span class="tag g-${esc(d.g)}">${esc(d.g)}</span>${d.st!=='مصنف'?`<span class="tag st-غير">${esc(d.st==='غير مدخل'?'تصنيف غير مدخل':d.st)}</span>`:''}${d.lv==='منتهي'?'<span class="tag lv-bad">تصنيف منتهي</span>':d.lv==='ينتهي خلال 90 يوماً'?'<span class="tag lv-warn">تصنيف ينتهي قريباً</span>':''}${d.es&&d.es!=='تعيين نشط'?`<span class="tag">${esc(d.es)}</span>`:''}${d.nt?`<span class="tag nt">${esc(d.nt)}</span>`:''}${d.d?`<span class="tag">${esc(d.d)}</span>`:''}</div>
-        ${d.em?`<div class="sp" style="direction:ltr;text-align:right;font-size:12.5px;overflow-wrap:anywhere">${esc(d.em)}</div>`:''}
+        ${d.em||d.mb?`<div class="sp" style="direction:ltr;text-align:right;font-size:12.5px;overflow-wrap:anywhere;line-height:1.5">${d.em?`<div>${esc(d.em)}</div>`:''}${d.mb?`<div class="num">${esc(d.mb)}</div>`:''}</div>`:''}
         <div class="ft"><span>${esc(d.h)}</span><span>${esc(d.na)}</span></div>
       </button>`).join('')}</div>`;
   } else {
