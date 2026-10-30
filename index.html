@@ -189,6 +189,44 @@ table.t{border-collapse:collapse;width:100%;font-size:14px;min-width:820px}
 .section-title p{margin:2px 0 0;color:var(--muted);font-size:14px}
 
 /* matrix */
+.dkpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;margin-bottom:16px}
+.dk{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;text-align:right;display:flex;flex-direction:column;gap:2px}
+button.dk{cursor:pointer}button.dk:hover{border-color:var(--brand-hi)}
+.dk .v{font-family:var(--f-display);font-size:26px;font-weight:700;line-height:1.15;color:var(--fg)}
+.dk .k{font-size:13px;color:var(--muted)}
+.dk .s{font-size:12px;color:var(--muted)}
+.dk.bad .v{color:var(--bad)}.dk.warn .v{color:var(--warn)}.dk.good .v{color:var(--brand-hi)}
+.dgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.dcard{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px;min-width:0}
+.dcard.span2{grid-column:1/-1}
+.dcard header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 12px;margin-bottom:12px}
+.dcard h3{font-family:var(--f-display);font-size:16px;margin:0;font-weight:700}
+.dcard header p{margin:0;color:var(--muted);font-size:12.5px;width:100%}
+.hbar{display:grid;grid-template-columns:minmax(0,15em) minmax(0,1fr) 3em;gap:10px;align-items:center;padding:4px 0;background:none;border:0;width:100%;text-align:right;font-size:13.5px;cursor:pointer}
+.hbar:hover .l{color:var(--brand-ink)}
+.hbar .l{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hbar .stack{display:flex;height:14px;border-radius:4px;overflow:hidden;background:var(--surface-2)}
+.hbar .stack i{display:block;height:100%}
+.hbar .n{text-align:left;color:var(--muted);font-variant-numeric:tabular-nums}
+.glist{display:flex;flex-direction:column;gap:10px;max-height:360px;overflow:auto}
+.glist .gh{font-size:13px;font-weight:700;margin-bottom:4px}
+.glist .gh small{color:var(--muted);font-weight:400}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{border:1px solid var(--line);background:var(--surface-2);border-radius:99px;padding:2px 10px;font-size:12.5px;cursor:pointer}
+.pill:hover{border-color:var(--brand-hi);color:var(--brand-ink)}
+.cols{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;align-items:end;height:170px;padding-top:18px}
+.col{display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.col .bars2{display:flex;gap:3px;align-items:flex-end;height:120px}
+.col .bars2 button{width:16px;border:0;border-radius:3px 3px 0 0;cursor:pointer;padding:0;position:relative}
+.col .bars2 button span{position:absolute;top:-17px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--fg);font-variant-numeric:tabular-nums}
+.col .m{font-size:12px;color:var(--muted);white-space:nowrap}
+.stbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.stbl td{padding:7px 0;border-bottom:1px solid var(--line)}
+.stbl td.n{text-align:left;font-variant-numeric:tabular-nums;font-weight:700}
+.stbl tr{cursor:pointer}.stbl tr:hover td{color:var(--brand-ink)}
+.empty-s{color:var(--muted);font-size:13px;padding:8px 0}
+@media (max-width:1100px){.dkpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:760px){.dgrid{grid-template-columns:minmax(0,1fr)}.dkpis{grid-template-columns:repeat(2,minmax(0,1fr))}.hbar{grid-template-columns:minmax(0,9em) minmax(0,1fr) 2.6em}}
 .mx{border-collapse:separate;border-spacing:2px;font-size:13px}
 .mx th{font-weight:600;color:var(--muted);font-size:12px;padding:4px 6px}
 .mx thead th{writing-mode:vertical-rl;transform:rotate(180deg);height:170px;max-width:44px;text-align:left;vertical-align:bottom;white-space:nowrap}
@@ -249,6 +287,7 @@ table.t{border-collapse:collapse;width:100%;font-size:14px;min-width:820px}
       </label>
     </div>
     <nav class="tabs" aria-label="العروض">
+      <a href="#dashboard" data-v="dashboard">لوحة الإدارة</a>
       <a href="#doctors" data-v="doctors">الأطباء</a>
       <a href="#hospitals" data-v="hospitals">المستشفيات</a>
       <a href="#matrix" data-v="matrix">التخصصات × المستشفيات</a>
@@ -300,6 +339,23 @@ table.t{border-collapse:collapse;width:100%;font-size:14px;min-width:820px}
       </div>
     </div>
     <div class="hgrid" id="hgrid"></div>
+  </section>
+
+  <section id="v-dashboard" hidden>
+    <div class="section-title">
+      <div><h2>لوحة الإدارة</h2><p>مؤشرات الكوادر الطبية وفجوات التغطية. اضغط على أي رقم أو تخصص لعرض الأطباء.</p></div>
+      <div class="controls"><select class="ctl" id="dbScope" aria-label="النطاق"></select></div>
+    </div>
+    <div class="dkpis" id="dbKpis"></div>
+    <div class="dgrid">
+      <article class="dcard span2"><header><h3>توزيع الدرجات حسب المستشفى</h3><div class="legend"><span><i class="dot" style="background:var(--consult)"></i>استشاري</span><span><i class="dot" style="background:var(--spec)"></i>أخصائي</span><span><i class="dot" style="background:var(--gp)"></i>طبيب عام</span><span><i class="dot" style="background:var(--rt)"></i>علاج تنفسي</span></div></header><div id="dbGrades"></div></article>
+      <article class="dcard"><header><h3>تخصصات يغطيها طبيب واحد</h3><p>خطر توقف الخدمة لو غاب أو انتهى عقده</p></header><div id="dbSingle"></div></article>
+      <article class="dcard"><header><h3>تخصصات بدون استشاري</h3><p>تخصصات فيها طبيبان أو أكثر وما فيها استشاري</p></header><div id="dbNoCons"></div></article>
+      <article class="dcard"><header><h3>انتهاء التصنيف والعقود خلال 6 أشهر</h3><div class="legend"><span><i class="dot" style="background:var(--bad)"></i>تصنيف مهني</span><span><i class="dot" style="background:var(--warn)"></i>عقد</span></div></header><div id="dbExpiry"></div></article>
+      <article class="dcard"><header><h3>نسبة السعوديين حسب المستشفى</h3></header><div id="dbSaudi"></div></article>
+      <article class="dcard"><header><h3>حالة الموظفين</h3><p>غير المتواجدين على رأس العمل حالياً</p></header><div id="dbStatus"></div></article>
+      <article class="dcard"><header><h3>الاستشاريون حسب مجموعة التخصص</h3></header><div id="dbGroups"></div></article>
+    </div>
   </section>
 
   <section id="v-matrix" hidden>
@@ -373,7 +429,7 @@ const save=()=>{try{localStorage.setItem('dir-state',JSON.stringify({sort:S.sort
 
 function pass(d,skip){
   if(S.q){const t=norm(S.q).split(/\s+/).filter(Boolean); if(!t.every(w=>d._q.includes(w))) return false;}
-  for(const k in S.sel){ if(k===skip) continue; const set=S.sel[k]; if(set&&set.size&&!set.has(val(d,k))) return false; }
+  for(const k in S.sel){ if(k===skip) continue; if(k==='__ids'){ if(S.sel.__ids.size&&!S.sel.__ids.has(d.id)) return false; continue; } const set=S.sel[k]; if(set&&set.size&&!set.has(val(d,k))) return false; }
   return true;
 }
 const filtered=()=>D.filter(d=>pass(d));
@@ -416,13 +472,14 @@ $('#facets').addEventListener('input',e=>{
 function chips(){
   const out=[];
   if(S.q) out.push(`<span class="chip"><small>بحث:</small> ${esc(S.q)} <button type="button" data-rm="q" aria-label="إزالة">×</button></span>`);
+  if(S.sel.__ids&&S.sel.__ids.size) out.push(`<span class="chip"><small>من لوحة الإدارة:</small> ${S.sel.__ids.size} طبيب <button type="button" data-rm="__ids" aria-label="إزالة">×</button></span>`);
   for(const f of FACETS){const set=S.sel[f.k]; if(set) set.forEach(v=>out.push(`<span class="chip"><small>${f.t}:</small> ${esc(v)} <button type="button" data-rm="${f.k}" data-v="${esc(v)}" aria-label="إزالة">×</button></span>`));}
   $('#chips').innerHTML=out.join('');
   const n=Object.values(S.sel).reduce((a,s)=>a+s.size,0);
   $('#fcount').textContent=n?`(${n})`:'';
 }
 $('#chips').addEventListener('click',e=>{const b=e.target.closest('button[data-rm]'); if(!b) return;
-  if(b.dataset.rm==='q'){S.q='';$('#q').value='';} else S.sel[b.dataset.rm].delete(b.dataset.v); update();});
+  if(b.dataset.rm==='q'){S.q='';$('#q').value='';} else if(b.dataset.rm==='__ids') delete S.sel.__ids; else S.sel[b.dataset.rm].delete(b.dataset.v); update();});
 $('#clearAll').onclick=()=>{S.sel={};S.q='';$('#q').value='';Object.keys(fState).forEach(k=>fState[k]='');update();};
 
 function kpis(list){
@@ -583,14 +640,88 @@ function renderMatrix(){
 }
 $('#mx').addEventListener('click',e=>{const td=e.target.closest('td[data-h]');if(!td)return;const o={h:td.dataset.h,s:td.dataset.s};if(S.mxGrade!=='all')o.g=S.mxGrade;goFilter(o)});
 
+// dashboard
+const ADMIN_GROUPS=new Set(['الإدارة والجودة']);
+const scopeSel=$('#dbScope');
+scopeSel.innerHTML='<option value="all">كل المستشفيات</option>'+cities.map(c=>`<optgroup label="${esc(c)}">${[...new Set(D.filter(d=>d.c===c).map(d=>d.h))].map(h=>`<option value="h:${esc(h)}">${esc(h)}</option>`).join('')}</optgroup>`).join('');
+scopeSel.onchange=renderDashboard;
+const MONTHS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+function renderDashboard(){
+  const sc=scopeSel.value, scH=sc.startsWith('h:')?sc.slice(2):null;
+  const L=D.filter(d=>!scH||d.h===scH);
+  const base=scH?{h:scH}:{};
+  const n=L.length, cons=L.filter(d=>d.g==='استشاري').length;
+  const natKnown=L.filter(d=>d.na&&d.na!=='غير محدد'), sa=natKnown.filter(d=>d.na==='السعودية').length;
+  const lexp=L.filter(d=>d.lv==='منتهي').length, lsoon=L.filter(d=>d.lv==='ينتهي خلال 90 يوماً').length;
+  const csoon=L.filter(d=>d.cv==='منتهي'||d.cv==='ينتهي خلال 90 يوماً').length;
+  const away=L.filter(d=>d.es&&d.es!=='تعيين نشط').length;
+  // single-doctor cells
+  const cell={};L.forEach(d=>{if(ADMIN_GROUPS.has(d.f))return;const k=d.h+'|'+d.s;(cell[k]=cell[k]||[]).push(d)});
+  const singles=Object.entries(cell).filter(([,v])=>v.length===1);
+  const NO_CONS_EXEMPT=new Set(['طب عام','أطباء مقيمون','العلاج التنفسي']);
+  const noCons=Object.entries(cell).filter(([k,v])=>v.length>=2&&!NO_CONS_EXEMPT.has(k.split('|')[1])&&!v.some(d=>d.g==='استشاري'));
+  const pct=(a,b)=>b?Math.round(a/b*100)+'%':'—';
+  const tile=(v,k,sub,cls,go)=>`<${go?'button type="button"':'div'} class="dk ${cls||''}" ${go?`data-go='${esc(JSON.stringify(go))}'`:''}><span class="v num">${v}</span><span class="k">${k}</span>${sub?`<span class="s">${sub}</span>`:''}</${go?'button':'div'}>`;
+  $('#dbKpis').innerHTML=
+    tile(n,'طبيب',scH?'في المستشفى':`في ${new Set(L.map(d=>d.h)).size} مستشفى`,'good',base)+
+    tile(pct(cons,n),'نسبة الاستشاريين',`${cons} استشاري`,'',{...base,g:'استشاري'})+
+    tile(pct(sa,natKnown.length),'نسبة السعوديين',`${sa} طبيب سعودي`,'',{...base,na:'السعودية'})+
+    tile(singles.length,'تخصص بطبيب واحد','خطر انقطاع الخدمة',singles.length?'warn':'')+
+    tile(lexp+lsoon,'تصنيف منتهٍ أو قريب',`${lexp} منتهي · ${lsoon} خلال 90 يوماً`,lexp?'bad':lsoon?'warn':'',{...base,lv:['منتهي','ينتهي خلال 90 يوماً']})+
+    tile(csoon,'عقد ينتهي خلال 90 يوماً',`${away} خارج رأس العمل`,csoon?'warn':'',{...base,cv:['منتهي','ينتهي خلال 90 يوماً']});
+  // grades per hospital
+  const byH={};L.forEach(d=>{(byH[d.h]=byH[d.h]||{});byH[d.h][d.g]=(byH[d.h][d.g]||0)+1});
+  const hs=Object.keys(byH).map(h=>[h,Object.values(byH[h]).reduce((a,b)=>a+b,0)]).sort((a,b)=>b[1]-a[1]);
+  const mxH=Math.max(1,...hs.map(x=>x[1]));
+  $('#dbGrades').innerHTML=hs.map(([h,t])=>`<button type="button" class="hbar" data-go='${esc(JSON.stringify({h}))}' title="${GORDER.map(g=>g+': '+(byH[h][g]||0)).join(' · ')}"><span class="l">${esc(h)}</span><span class="stack" style="width:${t/mxH*100}%">${GORDER.map(g=>byH[h][g]?`<i style="width:${byH[h][g]/t*100}%;background:${GCOL[g]}"></i>`:'').join('')}</span><span class="n">${t}</span></button>`).join('');
+  // grouped lists
+  const groupList=(entries,host,lab)=>{
+    const g={};entries.forEach(([k,v])=>{const [h,s]=k.split('|');(g[h]=g[h]||[]).push([s,v])});
+    const keys=Object.keys(g).sort((a,b)=>g[b].length-g[a].length);
+    $(host).innerHTML=keys.length?`<div class="glist">${keys.map(h=>`<div><div class="gh">${esc(h)} <small>(${g[h].length})</small></div><div class="pills">${g[h].sort((a,b)=>a[0].localeCompare(b[0],'ar')).map(([s,v])=>`<button type="button" class="pill" data-go='${esc(JSON.stringify({h,s}))}' title="${esc(lab(v))}">${esc(s)}</button>`).join('')}</div></div>`).join('')}</div>`:'<div class="empty-s">لا توجد حالات في هذا النطاق.</div>';
+  };
+  groupList(singles,'#dbSingle',v=>v[0].n+' · '+v[0].g);
+  groupList(noCons,'#dbNoCons',v=>v.length+' أطباء');
+  // expiry by month (next 6)
+  const now=new Date(), ms=[];
+  for(let i=0;i<6;i++){const d=new Date(now.getFullYear(),now.getMonth()+i,1);ms.push([d.getFullYear(),d.getMonth()])}
+  const ym=v=>{const m=/^(\d{4})\/(\d{2})/.exec(v||'');return m?[+m[1],+m[2]-1]:null};
+  const cnt=(k)=>ms.map(([y,m])=>L.filter(d=>{const x=ym(d[k]);return x&&x[0]===y&&x[1]===m&&+x[0]>1900}));
+  const lc=cnt('cx'), cc=cnt('ce'); const top=Math.max(1,...lc.map(a=>a.length),...cc.map(a=>a.length));
+  $('#dbExpiry').innerHTML=`<div class="cols">${ms.map(([y,m],i)=>`<div class="col"><div class="bars2">
+    <button type="button" style="height:${Math.max(2,lc[i].length/top*120)}px;background:var(--bad)" data-ids="${lc[i].map(d=>d.id).join(',')}" aria-label="تصنيف ${MONTHS[m]}: ${lc[i].length}"><span>${lc[i].length||''}</span></button>
+    <button type="button" style="height:${Math.max(2,cc[i].length/top*120)}px;background:var(--warn)" data-ids="${cc[i].map(d=>d.id).join(',')}" aria-label="عقد ${MONTHS[m]}: ${cc[i].length}"><span>${cc[i].length||''}</span></button>
+    </div><span class="m">${MONTHS[m]}</span></div>`).join('')}</div>`;
+  // saudization
+  const sH={};L.forEach(d=>{if(!d.na||d.na==='غير محدد')return;(sH[d.h]=sH[d.h]||[0,0]);sH[d.h][1]++;if(d.na==='السعودية')sH[d.h][0]++});
+  $('#dbSaudi').innerHTML=Object.entries(sH).sort((a,b)=>b[1][0]/b[1][1]-a[1][0]/a[1][1]).map(([h,[a,t]])=>`<button type="button" class="hbar" data-go='${esc(JSON.stringify({h,na:'السعودية'}))}'><span class="l">${esc(h)}</span><span class="stack"><i style="width:${a/t*100}%;background:var(--brand-hi)"></i></span><span class="n">${Math.round(a/t*100)}%</span></button>`).join('');
+  // status
+  const st={};L.forEach(d=>{if(d.es&&d.es!=='تعيين نشط')st[d.es]=(st[d.es]||0)+1});
+  const se=Object.entries(st).sort((a,b)=>b[1]-a[1]);
+  $('#dbStatus').innerHTML=se.length?`<table class="stbl"><tbody>${se.map(([k,v])=>`<tr data-go='${esc(JSON.stringify({...base,es:k}))}'><td>${esc(k)}</td><td class="n">${v}</td></tr>`).join('')}</tbody></table>`:'<div class="empty-s">كل الأطباء على رأس العمل.</div>';
+  // consultants by group
+  const gC={};L.forEach(d=>{(gC[d.f]=gC[d.f]||[0,0]);gC[d.f][1]++;if(d.g==='استشاري')gC[d.f][0]++});
+  const gm=Math.max(1,...Object.values(gC).map(x=>x[1]));
+  $('#dbGroups').innerHTML=Object.entries(gC).sort((a,b)=>b[1][1]-a[1][1]).map(([g,[c,t]])=>`<button type="button" class="hbar" data-go='${esc(JSON.stringify({...base,f:g}))}' title="${c} استشاري من ${t}"><span class="l">${esc(g)}</span><span class="stack" style="width:${t/gm*100}%"><i style="width:${c/t*100}%;background:var(--consult)"></i><i style="width:${(t-c)/t*100}%;background:var(--gp);opacity:.5"></i></span><span class="n">${c}/${t}</span></button>`).join('');
+}
+$('#v-dashboard').addEventListener('click',e=>{
+  const ids=e.target.closest('[data-ids]');
+  if(ids){const set=new Set(ids.dataset.ids.split(',').filter(Boolean).map(Number)); if(!set.size)return;
+    const names=[...set].map(i=>D[i].n); S.sel={}; S.q=''; $('#q').value=''; S.sel.__ids=set; location.hash='doctors'; update(); return;}
+  const b=e.target.closest('[data-go]'); if(!b) return;
+  const o=JSON.parse(b.dataset.go); S.sel={}; S.q=''; $('#q').value='';
+  for(const k in o) S.sel[k]=new Set([].concat(o[k]));
+  S.limit=60; location.hash='doctors'; update(); window.scrollTo({top:0});
+});
+
 // routing
 let view='doctors';
 function route(){
-  view=['doctors','hospitals','matrix'].includes(location.hash.slice(1))?location.hash.slice(1):'doctors';
-  ['doctors','hospitals','matrix'].forEach(v=>$('#v-'+v).hidden=v!==view);
+  view=['dashboard','doctors','hospitals','matrix'].includes(location.hash.slice(1))?location.hash.slice(1):'dashboard';
+  ['dashboard','doctors','hospitals','matrix'].forEach(v=>$('#v-'+v).hidden=v!==view);
   $$('nav.tabs a').forEach(a=>a.toggleAttribute('aria-current',a.dataset.v===view)||a.dataset.v===view&&a.setAttribute('aria-current','page'));
   $$('nav.tabs a').forEach(a=>{if(a.dataset.v===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
-  if(view==='hospitals')renderHospitals(); if(view==='matrix')renderMatrix();
+  if(view==='hospitals')renderHospitals(); if(view==='matrix')renderMatrix(); if(view==='dashboard')renderDashboard();
 }
 window.addEventListener('hashchange',route);
 
