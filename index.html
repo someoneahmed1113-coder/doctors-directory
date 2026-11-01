@@ -73,6 +73,8 @@ main,header.top{position:relative}
 .search svg{position:absolute;right:12px;top:11px;width:20px;height:20px;color:var(--muted)}
 nav.tabs{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
 nav.tabs a{padding:10px 14px;color:var(--on-navy-muted);text-decoration:none;font-weight:600;font-size:14px;border-bottom:2px solid transparent;white-space:nowrap}
+nav.tabs a.ext{color:var(--on-navy);background:rgba(255,255,255,.1);border-radius:8px 8px 0 0}
+nav.tabs a.ext:hover{background:rgba(255,255,255,.18)}
 nav.tabs a[aria-current="page"]{color:var(--on-navy);border-color:var(--brand-hi);border-bottom-width:3px}
 
 /* layout */
@@ -291,6 +293,7 @@ button.dk{cursor:pointer}button.dk:hover{border-color:var(--brand-hi)}
       <a href="#doctors" data-v="doctors">الأطباء</a>
       <a href="#hospitals" data-v="hospitals">المستشفيات</a>
       <a href="#matrix" data-v="matrix">التخصصات × المستشفيات</a>
+      <a href="https://claude.ai/artifact/DbCQV8zWPaSjDTwodbi6vK" target="_blank" rel="noopener" class="ext" title="يفتح منصة الدعم بين المستشفيات">الدعم بين المستشفيات <span aria-hidden="true">↗</span></a>
     </nav>
   </div>
 </header>
